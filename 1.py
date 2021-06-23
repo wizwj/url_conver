@@ -62,7 +62,8 @@ def wechat_fuc(text):
     chat_list = win_main_Dialog.child_window(title="输入", control_type="Edit")
     chat_list.type_keys(text)
     win_main_Dialog.child_window(title="发送(S)", control_type="Button").click_input()
-    win_main_Dialog.child_window(title="消息", control_type="List")[-1].click_input()
+    a = win_main_Dialog.child_window(title="消息", control_type="List")[-1]
+    a.click_input(coords=(int(float(a.rectangle().width()) / 2), int(float(a.rectangle().height()) / 5)))
     time.sleep(2)
     app2 = Application(backend="uia").connect(title="微信", class_name="CefWebViewWnd")
     win_main_Dialog2 = app2.window(title="微信", class_name="CefWebViewWnd")
