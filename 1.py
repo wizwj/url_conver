@@ -7,6 +7,8 @@ import time
 import win32clipboard
 import xlutils
 from xlutils.copy import copy
+from pywinauto.keyboard import send_keys
+import win32con
 
 # 采集数据开始
 def search_hot_article(type):
@@ -47,6 +49,9 @@ def read_excel():
     sheet2 = f.get_sheet('sheet1')
     for i in range(rowNum):
         s = sheet1.cell(i, 1).value
+        win32clipboard.OpenClipboard()
+        win32clipboard.SetClipboardData(win32con.CF_UNICODETEXT, "链接错误")
+        win32clipboard.CloseClipboard()
         if i != 0:
             d_cli = wechat_fuc(s)
             sheet2.write(i, 2, d_cli)
@@ -71,10 +76,10 @@ def wechat_fuc(text):
         win_main_Dialog2.child_window(title="复制链接地址", control_type="Button").wait('ready', timeout=15)
     except:
         win_main_Dialog2.child_window(title="关闭", control_type="Button").click_input()
-        # text = "http://mp.weixin.qq.com/s?src=11&timestamp=1624360686&ver=3146&signature=4FAel0O93chG59nkIF64Ps8*swE7OJp7wQCg0dN7TzdKpH0EzkxWO320liP3FQWqL5yPc7eOtKYuEBkydPSYVa5AOzrvy0IslUcJG10gyrfwIH*b8inKBP7yKONAsN*E&new=1"
-        wechat_fuc(text)
+        # wechat_fuc(text)
     else:
         win_main_Dialog2.child_window(title="复制链接地址", control_type="Button").click_input()
+        send_keys(' {ENTER} ')
         win_main_Dialog2.child_window(title="关闭", control_type="Button").click_input()
     win32clipboard.OpenClipboard()
     data_cli = win32clipboard.GetClipboardData()
